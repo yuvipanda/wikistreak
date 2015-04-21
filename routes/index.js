@@ -41,7 +41,7 @@ router.get('/:wiki/:username', function(req, res) {
         // Fill up missing dates with 0!
 
         var data = [];
-        for(var d = limitDate, curDate = Date.today(); !d.equals(curDate); d = d.addDays(1)) {
+        for(var d = limitDate, curDate = Date.today(); !d.equals(curDate); d.addDays(1)) {
             console.error(d);
             var count = 0;
             console.error(rows);
@@ -50,7 +50,7 @@ router.get('/:wiki/:username', function(req, res) {
             }
 
             data.push({
-                date: d,
+                date: d.clone(),
                 count: count
             });
         }
