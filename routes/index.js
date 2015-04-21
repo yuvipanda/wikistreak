@@ -38,23 +38,17 @@ router.get('/:wiki/:username', function(req, res) {
         if (err) {
             console.error(err);
         }
-        // Fill up missing dates with 0!
-        var data = [];
-        for(var d = limitDate, curDate = Date.today(); !d.equals(curDate); d = d.addDays(1).clone()) {
-            console.error(d);
-            var count = 0;
-            console.error(rows);
-            if(rows && rows[0] && rows[0].date.equals(d)) {
-                    count = rows.shift().count;
-            }
 
-            data.push({
-                date: d,
-                count: count
-            });
-        }
+        var editsData = {};
+        rows.forEach(function(entry) {
+            editsData[entry.date.getTime()] = entry.count;
+        });
 
-        res.send(data);
+        res.send({
+            username: req.params.username,
+            wiki: req.params.wiki,
+            edits: editsData
+        });
     });
 });
 module.exports = router;
